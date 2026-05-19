@@ -14,7 +14,12 @@ export default function App() {
   useScrollSnap(reducedMotion ? 0 : 300, 150)
 
   return (
-    <div className="w-[440px] max-w-full min-h-screen flex flex-col bg-white mx-auto relative">
+    /* translateZ(0) makes fixed children position relative to this container
+       (not the viewport) so they always align perfectly with mx-auto */
+    <div
+      className="w-[440px] max-w-full min-h-screen flex flex-col bg-white mx-auto relative"
+      style={{ transform: 'translateZ(0)' }}
+    >
       <Hero scrollY={scrollY} />
 
       <Services />

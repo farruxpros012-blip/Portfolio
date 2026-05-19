@@ -20,7 +20,7 @@ export default function CompactHeader({ scrollY }: CompactHeaderProps) {
   return (
     <motion.div
       style={{ opacity, y, pointerEvents }}
-      className="fixed top-0 left-1/2 -translate-x-1/2 w-[440px] max-w-full h-[180px] z-40 overflow-hidden bg-[#0a1426]"
+      className="fixed top-0 left-0 right-0 h-[180px] z-40 overflow-hidden bg-[#0a1426]"
     >
       <img
         src={HERO_BG}
