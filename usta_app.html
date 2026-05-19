@@ -144,31 +144,53 @@
   /* BANNER */
   .promo {
     margin: 0 24px 22px;
-    background: linear-gradient(135deg, #1A1612 0%, #2A2018 50%, #3A2818 100%);
+    background: #1A1612;
     border-radius: 24px;
     padding: 22px;
     color: white;
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-height: 170px;
+    min-height: 200px;
+  }
+
+  .promo-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .promo-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .promo::before {
     content: '';
     position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255, 91, 46, 0.5) 0%, transparent 65%);
-    border-radius: 50%;
+    inset: 0;
+    background:
+      linear-gradient(95deg, rgba(26, 22, 18, 0.92) 0%, rgba(26, 22, 18, 0.7) 45%, rgba(26, 22, 18, 0.2) 80%, transparent 100%),
+      linear-gradient(180deg, transparent 50%, rgba(26, 22, 18, 0.55) 100%);
+    z-index: 1;
   }
 
-  .promo-content { position: relative; z-index: 2; flex: 1; }
+  .promo::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(255, 91, 46, 0.45) 0%, transparent 65%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .promo-content { position: relative; z-index: 2; max-width: 70%; }
 
   .promo-badge {
     display: inline-flex;
@@ -216,26 +238,6 @@
     gap: 6px;
     font-family: 'Geist', sans-serif;
     box-shadow: 0 6px 18px rgba(255, 91, 46, 0.4);
-  }
-
-  .promo-visual {
-    position: relative;
-    z-index: 1;
-    width: 110px;
-    height: 140px;
-    border-radius: 18px;
-    overflow: hidden;
-    flex-shrink: 0;
-    border: 3px solid rgba(255,255,255,0.15);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    background: #2A2018;
-  }
-
-  .promo-visual img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
   .promo-dots {
@@ -555,6 +557,9 @@
 
     <!-- BANNER -->
     <div class="promo">
+      <div class="promo-bg">
+        <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=800&auto=format&fit=crop" alt="Kir yuvish">
+      </div>
       <div class="promo-content">
         <span class="promo-badge">Maxsus taklif</span>
         <h2 class="promo-title">Kir yuvish<br><em>30% chegirma</em></h2>
@@ -563,9 +568,6 @@
           USTA30 kodi
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
-      </div>
-      <div class="promo-visual">
-        <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=300&auto=format&fit=crop" alt="Kir yuvish">
       </div>
     </div>
 
