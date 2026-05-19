@@ -8,35 +8,27 @@ interface HeroProps {
 }
 
 /**
- * Hero — morphs between Figma Frame 1 (956×440) and Frame 2 (259×440).
+ * Hero — full Frame 1 layout. Scrolls naturally with the page.
+ * As scroll progresses (0 → 250 px) the hero gently fades out so the
+ * compact <CompactHeader/> can take over at the top of the viewport.
  *
- * Figma positions (px, with 59px iPhone status-bar area at top):
- *   Logo:      y=67   (always visible, same in F1 & F2)
- *   Headline:  y=217  (F1 only, fades)
- *   Subtitle:  y=345  (F1 only, fades)
- *   Search:    y=421 (F1) → y=163 (F2)
- *   Swipe up:  y=838  (F1 only, fades)
- *   Hero h:    956 (F1) → 259 (F2)
+ * Internal element positions (px from top):
+ *   Logo:      y=20  (same distance from top as from left)
+ *   Headline:  y=158
+ *   Subtitle:  y=270
+ *   Search:    y=370
+ *   Swipe up:  y=720
+ *   Hero h:    800
  */
 export default function Hero({ scrollY }: HeroProps) {
-  const heroHeight = useTransform(scrollY, [0, 300], [956, 259], { clamp: true })
-
-  /* Frame 1 → Frame 2 element transitions */
-  const headlineOpacity = useTransform(scrollY, [0, 100], [1, 0], { clamp: true })
-  const subtitleOpacity = useTransform(scrollY, [50, 150], [1, 0], { clamp: true })
-  const swipeOpacity    = useTransform(scrollY, [0, 80],  [1, 0], { clamp: true })
-  const searchTop       = useTransform(scrollY, [0, 300], [421, 163], { clamp: true })
-
-  /* Frame 1 (light bottom gradient) fades out; Frame 2 (dark top gradient) fades in */
-  const f1OverlayOpacity = useTransform(scrollY, [0, 300], [1, 0], { clamp: true })
-  const f2OverlayOpacity = useTransform(scrollY, [0, 300], [0, 1], { clamp: true })
+  const heroOpacity = useTransform(scrollY, [120, 280], [1, 0], { clamp: true })
+  const swipeOpacity = useTransform(scrollY, [0, 80], [1, 0], { clamp: true })
 
   return (
     <motion.section
-      style={{ height: heroHeight }}
-      className="relative w-full overflow-hidden flex-shrink-0 bg-[#0a1426]"
+      style={{ opacity: heroOpacity }}
+      className="relative w-full h-[800px] overflow-hidden bg-[#0a1426] flex-shrink-0"
     >
-      {/* Background image (positioned to show sky/horizon when compressed) */}
       <img
         src={HERO_BG}
         alt=""
@@ -44,45 +36,27 @@ export default function Hero({ scrollY }: HeroProps) {
         style={{ objectPosition: 'center 35%' }}
       />
 
-      {/* Frame 1 overlay (warm dark, full hero) */}
-      <motion.div
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: f1OverlayOpacity,
           backgroundImage:
             'linear-gradient(180deg, rgba(6,18,42,.78) 0%, rgba(6,18,42,.55) 30%, rgba(6,18,42,.08) 55%, transparent 70%, rgba(3,10,24,.40) 100%)',
         }}
       />
 
-      {/* Frame 2 overlay (Figma: rgba(0,0,0,.64) → transparent at 63%) */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: f2OverlayOpacity,
-          backgroundImage:
-            'linear-gradient(180deg, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0) 63%)',
-        }}
-      />
-
-      {/* Logo — Figma: y=67, x=20 (after 59px status bar + 8px py) */}
-      <div className="absolute top-[67px] left-5 z-10">
+      {/* Logo — top=20, left=20 (equal margins) */}
+      <div className="absolute top-5 left-5 z-10">
         <Logo />
       </div>
 
-      {/* Headline — Figma: y=217 (F1 only) */}
-      <motion.h1
-        className="absolute top-[217px] left-5 right-5 z-10 text-[44px] font-extrabold text-white leading-[44px] tracking-[0.4px] pointer-events-none"
-        style={{ opacity: headlineOpacity }}
-      >
+      {/* Headline */}
+      <h1 className="absolute top-[158px] left-5 right-5 z-10 text-[44px] font-extrabold text-white leading-[44px] tracking-[0.4px] pointer-events-none">
         Всё для<br />
         <span className="text-accent italic">путешествия</span>
-      </motion.h1>
+      </h1>
 
-      {/* Subtitle — Figma: y=345 (F1 only) */}
-      <motion.p
-        className="absolute top-[310px] left-5 right-5 z-10 text-[14px] font-semibold text-white/70 leading-[20px] -tracking-[.3px] flex flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none"
-        style={{ opacity: subtitleOpacity }}
-      >
+      {/* Subtitle */}
+      <p className="absolute top-[270px] left-5 right-5 z-10 text-[14px] font-semibold text-white/70 leading-5 -tracking-[.3px] flex flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none">
         <span>Авиабилеты</span><span className="opacity-50">·</span>
         <span>Отели</span><span className="opacity-50">·</span>
         <span>Туры</span><span className="opacity-50">·</span>
@@ -91,13 +65,10 @@ export default function Hero({ scrollY }: HeroProps) {
         <span>Аэропорт-такси</span><span className="opacity-50">·</span>
         <span>Трансфер</span><span className="opacity-50">·</span>
         <span>Аренда авто</span>
-      </motion.p>
+      </p>
 
-      {/* Search bar — Figma: F1 y=421 → F2 y=163 */}
-      <motion.div
-        className="absolute left-5 right-5 z-10"
-        style={{ top: searchTop }}
-      >
+      {/* Search bar */}
+      <div className="absolute top-[370px] left-5 right-5 z-10">
         <div className="bg-white/95 backdrop-blur-xl rounded-[32px] flex items-center shadow-[0px_4px_8px_rgba(0,0,0,0.2)]">
           <div className="flex-1 flex items-center gap-4 pl-5 py-5">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -125,11 +96,11 @@ export default function Hero({ scrollY }: HeroProps) {
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Swipe up — Figma: y=838 (F1 only) */}
+      {/* Swipe up */}
       <motion.div
-        className="absolute top-[838px] left-0 right-0 z-10 flex flex-col items-center gap-1 pointer-events-none"
+        className="absolute top-[720px] left-0 right-0 z-10 flex flex-col items-center gap-1 pointer-events-none"
         style={{ opacity: swipeOpacity }}
       >
         <svg width="24" height="14" viewBox="0 0 24 14" fill="none">

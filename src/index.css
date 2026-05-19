@@ -16,6 +16,14 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide vertical scrollbar so `fixed left-1/2` aligns with `mx-auto` container */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
 #root {
   display: flex;
   justify-content: center;

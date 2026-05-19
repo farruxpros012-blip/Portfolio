@@ -1,5 +1,6 @@
 import { useScroll, useReducedMotion } from 'framer-motion'
 import Hero from './components/Hero'
+import CompactHeader from './components/CompactHeader'
 import Services from './components/Services'
 import ToursByCountry from './components/ToursByCountry'
 import PopularDestinations from './components/PopularDestinations'
@@ -13,7 +14,7 @@ export default function App() {
   useScrollSnap(reducedMotion ? 0 : 300, 150)
 
   return (
-    <div className="w-[440px] max-w-full min-h-screen flex flex-col bg-white mx-auto relative overflow-x-hidden">
+    <div className="w-[440px] max-w-full min-h-screen flex flex-col bg-white mx-auto relative">
       <Hero scrollY={scrollY} />
 
       <Services />
@@ -23,6 +24,7 @@ export default function App() {
       {/* Spacer so the fixed BottomNav (~94px) doesn't cover content */}
       <div className="h-[94px] bg-white shrink-0" />
 
+      <CompactHeader scrollY={scrollY} />
       <BottomNav scrollY={scrollY} />
     </div>
   )
