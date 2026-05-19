@@ -71,7 +71,7 @@ export default function Hero({ scrollY }: HeroProps) {
 
       {/* Headline — Figma: y=217 (F1 only) */}
       <motion.h1
-        className="absolute top-[217px] left-5 right-5 z-10 text-[56px] font-extrabold text-white leading-[56px] tracking-[0.4px] pointer-events-none"
+        className="absolute top-[217px] left-5 right-5 z-10 text-[44px] font-extrabold text-white leading-[44px] tracking-[0.4px] pointer-events-none"
         style={{ opacity: headlineOpacity }}
       >
         Всё для<br />
@@ -80,7 +80,7 @@ export default function Hero({ scrollY }: HeroProps) {
 
       {/* Subtitle — Figma: y=345 (F1 only) */}
       <motion.p
-        className="absolute top-[355px] left-5 right-5 z-10 text-[17px] font-semibold text-white/70 leading-[22px] -tracking-[.43px] flex flex-wrap items-center gap-x-1 gap-y-1.5 pointer-events-none"
+        className="absolute top-[310px] left-5 right-5 z-10 text-[14px] font-semibold text-white/70 leading-[20px] -tracking-[.3px] flex flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none"
         style={{ opacity: subtitleOpacity }}
       >
         <span>Авиабилеты</span><span className="opacity-50">·</span>
@@ -141,7 +141,7 @@ export default function Hero({ scrollY }: HeroProps) {
             strokeLinejoin="round"
           />
         </svg>
-        <span className="text-[17px] font-semibold text-white/90 -tracking-[.43px] leading-[22px]">
+        <span className="text-[15px] font-semibold text-white/90 -tracking-[.3px] leading-5">
           Проведите вверх
         </span>
       </motion.div>
