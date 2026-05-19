@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #F7F5F1;
+    --ink: #0A0A0A;
+    --ink-soft: #4A4A4A;
+    --ink-muted: #9B9B9B;
+    --accent: #2D5F3F;
+    --accent-soft: #E8F0EA;
+    --warm: #E8541C;
+    --warm-soft: #FFE8DD;
+    --card: #FFFFFF;
+    --border: #EEEAE3;
+    --gold: #C9A961;
+  }
+
+  body {
+    background: #E8E3DA;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 48px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 12px #1A1612,
+      0 0 0 14px #2A241E,
+      0 30px 60px rgba(0,0,0,0.15);
+  }
+
+  .scroll-area {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 110px;
+  }
+
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  .notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 32px;
+    background: #1A1612;
+    border-radius: 20px;
+    z-index: 100;
+  }
+
+  .status-bar {
+    padding: 56px 32px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+
+  .header {
+    padding: 8px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .logo em {
+    font-style: italic;
+    color: var(--warm);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .icon-btn .badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--warm);
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+  }
+
+  .hero {
+    padding: 12px 24px 20px;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+  }
+
+  .hero-meta::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--ink-muted);
+  }
+
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--warm);
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    max-width: 280px;
+  }
+
+  .search-wrap {
+    padding: 0 24px 24px;
+  }
+
+  .search {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-icon { color: var(--ink-muted); }
+
+  .search-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  .search-shortcut {
+    font-size: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 3px 7px;
+    border-radius: 6px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .cat-pills {
+    padding: 0 0 24px 24px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .cat-pills::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border-radius: 100px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .cat-pill:last-child {
+    margin-right: 24px;
+  }
+
+  .cat-pill.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  .cat-pill .count {
+    font-size: 11px;
+    opacity: 0.6;
+  }
+
+  .featured {
+    margin: 0 24px 32px;
+    background: var(--ink);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    color: white;
+  }
+
+  .featured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(232, 84, 28, 0.4), transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(45, 95, 63, 0.5), transparent 50%);
+    z-index: 0;
+  }
+
+  .featured > * { position: relative; z-index: 1; }
+
+  .featured-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .featured-cat {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .featured-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .featured-bottom h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .featured-bottom h3 em {
+    font-style: italic;
+    color: #FFC56B;
+  }
+
+  .featured-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 16px;
+  }
+
+  .featured-meta-text {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    max-width: 60%;
+  }
+
+  .featured-cta {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: white;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-head {
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 18px;
+  }
+
+  .section-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .section-head h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .section-head h2 em {
+    font-style: italic;
+    color: var(--warm);
+  }
+
+  .section-link {
+    font-size: 11px;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+  }
+
+  .service-list {
+    padding: 0 24px;
+    margin-bottom: 32px;
+  }
+
+  .service-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .service-row:last-child { border-bottom: none; }
+
+  .service-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+
+  .service-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .service-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .service-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .service-cat {
+    font-size: 10px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+
+  .service-divider {
+    width: 3px;
+    height: 3px;
+    background: var(--ink-muted);
+    border-radius: 50%;
+  }
+
+  .service-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .service-rating .star { color: var(--gold); font-size: 10px; }
+
+  .service-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+
+  .service-desc {
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.3;
+  }
+
+  .service-price {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .service-price-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .service-price-label {
+    font-size: 10px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .ornament-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 24px;
+    margin-bottom: 24px;
+  }
+
+  .ornament-divider .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .ornament-divider .symbol {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .promo-strip {
+    margin: 0 24px 32px;
+    background: var(--warm-soft);
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #FFCDB8;
+  }
+
+  .promo-strip-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--warm);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(232, 84, 28, 0.3);
+  }
+
+  .promo-strip-text { flex: 1; }
+
+  .promo-strip-text strong {
+    display: block;
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .promo-strip-text small {
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  .promo-strip-arrow {
+    color: var(--warm);
+  }
+
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 14px 24px 28px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    z-index: 50;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--ink-muted);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 10px;
+  }
+
+  .nav-item.active { color: var(--ink); }
+
+  .nav-item.fab {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: white;
+    margin-top: -26px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+  }
+
+  .nav-item.fab svg { width: 22px; height: 22px; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <div class="scroll-area">
+
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><path d="M1 8h2v3H1zM5 6h2v5H5zM9 4h2v7H9zM13 1h2v10h-2z"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 3c2.2 0 4.2.9 5.7 2.3l1.4-1.4C13.2 2 10.7 1 8 1S2.8 2 .9 3.9l1.4 1.4C3.8 3.9 5.8 3 8 3z"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="22" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2.5" y="2.5" width="19" height="7" rx="1.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="logo">Usta<em>.</em></div>
+      <div class="header-actions">
+        <div class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-meta">№ 01 · Bosh sahifa</div>
+      <h1 class="hero-title">Bugun sizga<br><em>kim</em> kerak?</h1>
+      <p class="hero-subtitle">Eng yaxshi ustalar, shifokorlar va mutaxassislar — bir bosishda.</p>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="search-text">Qidirish...</span>
+        <span class="search-shortcut">⌘ K</span>
+      </div>
+    </div>
+
+    <div class="cat-pills">
+      <div class="cat-pill active">Hammasi <span class="count">128</span></div>
+      <div class="cat-pill">Sog'liq <span class="count">24</span></div>
+      <div class="cat-pill">Uy <span class="count">42</span></div>
+      <div class="cat-pill">Ta'lim <span class="count">31</span></div>
+      <div class="cat-pill">Go'zallik <span class="count">18</span></div>
+      <div class="cat-pill">Avto <span class="count">13</span></div>
+    </div>
+
+    <div class="featured">
+      <div class="featured-top">
+        <span class="featured-cat">Tezkor xizmat</span>
+        <span class="featured-num">01</span>
+      </div>
+      <div class="featured-bottom">
+        <h3>15 daqiqada<br><em>ustangiz</em><br>keladi</h3>
+        <div class="featured-meta">
+          <p class="featured-meta-text">Shoshilinch holatlar uchun 24/7 tayyor mutaxassislar.</p>
+          <div class="featured-cta">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOG'LIQ -->
+    <div class="section-head">
+      <div>
+        <span class="section-num">№ 02</span>
+        <h2><em>Sog'liq</em> xizmatlari</h2>
+      </div>
+      <a class="section-link">Barchasi →</a>
+    </div>
+
+    <div class="service-list">
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=200&auto=format&fit=crop" alt="Hamshira" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Hamshira</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.9 (234)</span>
+          </div>
+          <h3 class="service-name">Uyga uqol qilish</h3>
+          <p class="service-desc">Tajribali hamshira, sterilizatsiya</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">60K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&auto=format&fit=crop" alt="Shifokor" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Shifokor</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>5.0 (412)</span>
+          </div>
+          <h3 class="service-name">Uyga chaqirish</h3>
+          <p class="service-desc">Terapevt, pediatr, kardiolog</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">120K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=200&auto=format&fit=crop" alt="Stomatolog" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Stomatolog</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.8 (156)</span>
+          </div>
+          <h3 class="service-name">Tish davolash</h3>
+          <p class="service-desc">Konsultatsiya, plomba, tozalash</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">200K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="promo-strip">
+      <div class="promo-strip-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 12V8H6a2 2 0 0 1 0-4h12.5a.5.5 0 0 1 0 5H6a2 2 0 0 0 0 4h14v-4"/></svg>
+      </div>
+      <div class="promo-strip-text">
+        <strong>30% chegirma</strong>
+        <small>Birinchi buyurtmangizga · Kod: USTA30</small>
+      </div>
+      <div class="promo-strip-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- UY XIZMATLARI -->
+    <div class="section-head">
+      <div>
+        <span class="section-num">№ 03</span>
+        <h2><em>Uy</em> xizmatlari</h2>
+      </div>
+      <a class="section-link">Barchasi →</a>
+    </div>
+
+    <div class="service-list">
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=200&auto=format&fit=crop" alt="Santexnik" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Santexnik</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.9 (512)</span>
+          </div>
+          <h3 class="service-name">Suv quvurlari</h3>
+          <p class="service-desc">Jo'mrak, kran, kanalizatsiya</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">80K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=200&auto=format&fit=crop" alt="Elektrik" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Elektrik</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.8 (287)</span>
+          </div>
+          <h3 class="service-name">Simlar va lampalar</h3>
+          <p class="service-desc">Rozetka, lyustra, montaj</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">100K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=200&auto=format&fit=crop" alt="Konditsioner" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Konditsioner</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.9 (189)</span>
+          </div>
+          <h3 class="service-name">O'rnatish va ta'mirlash</h3>
+          <p class="service-desc">Split, tozalash, zaryadka</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">120K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&auto=format&fit=crop" alt="Tozalash" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Tozalash</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>5.0 (623)</span>
+          </div>
+          <h3 class="service-name">Uy tozalash</h3>
+          <p class="service-desc">General, oddiy, derazalar</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">150K</div>
+          <div class="service-price-label">so'mdan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ornament-divider">
+      <span class="line"></span>
+      <span class="symbol">❦</span>
+      <span class="line"></span>
+    </div>
+
+    <!-- TA'LIM -->
+    <div class="section-head">
+      <div>
+        <span class="section-num">№ 04</span>
+        <h2><em>Ta'lim</em> mutaxassislari</h2>
+      </div>
+      <a class="section-link">Barchasi →</a>
+    </div>
+
+    <div class="service-list">
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=200&auto=format&fit=crop" alt="Matematika" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Matematika</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.9 (124)</span>
+          </div>
+          <h3 class="service-name">Repetitor</h3>
+          <p class="service-desc">Maktab, abituriyent, oliy</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">70K</div>
+          <div class="service-price-label">soatiga</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=200&auto=format&fit=crop" alt="Ingliz tili" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Ingliz tili</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>5.0 (298)</span>
+          </div>
+          <h3 class="service-name">Onlayn darslar</h3>
+          <p class="service-desc">IELTS, CEFR, suhbat</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">80K</div>
+          <div class="service-price-label">soatiga</div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-icon">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&auto=format&fit=crop" alt="Dasturlash" loading="lazy">
+        </div>
+        <div class="service-body">
+          <div class="service-top">
+            <span class="service-cat">Dasturlash</span>
+            <span class="service-divider"></span>
+            <span class="service-rating"><span class="star">★</span>4.9 (87)</span>
+          </div>
+          <h3 class="service-name">IT kurslar</h3>
+          <p class="service-desc">Python, JS, Web, Mobile</p>
+        </div>
+        <div class="service-price">
+          <div class="service-price-num">120K</div>
+          <div class="service-price-label">soatiga</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg>
+      <span>Asosiy</span>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Buyurtmalar</span>
+    </div>
+    <div class="nav-item fab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Xabarlar</span>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profil</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
