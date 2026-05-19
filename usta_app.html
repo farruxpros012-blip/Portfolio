@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usta — Bosh sahifa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #FAF7F2;
+    --ink: #1A1612;
+    --ink-soft: #5C544A;
+    --ink-muted: #9B9183;
+    --accent: #FF5B2E;
+    --accent-soft: #FFE8DF;
+    --card: #FFFFFF;
+    --green: #2D6B4F;
+    --gold: #D4A574;
+    --gold-soft: #F5E6D3;
+    --shadow-sm: 0 2px 8px rgba(26, 22, 18, 0.04);
+    --shadow-md: 0 8px 24px rgba(26, 22, 18, 0.08);
+    --shadow-lg: 0 20px 40px rgba(26, 22, 18, 0.1);
+  }
+
+  body {
+    background: #E8E3DA;
+    font-family: 'Geist', sans-serif;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 48px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 12px #1A1612,
+      0 0 0 14px #2A241E,
+      0 30px 60px rgba(0,0,0,0.15);
+  }
+
+  .scroll-area {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 110px;
+  }
+
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  .notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 32px;
+    background: #1A1612;
+    border-radius: 20px;
+    z-index: 100;
+  }
+
+  .status-bar {
+    padding: 56px 32px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+
+  .header {
+    padding: 12px 24px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .location-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .loc-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loc-text { display: flex; flex-direction: column; line-height: 1.1; }
+
+  .loc-text small { font-size: 10px; color: var(--ink-muted); font-weight: 500; }
+
+  .loc-text strong {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(26, 22, 18, 0.04);
+    position: relative;
+  }
+
+  .icon-btn .badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 2px solid var(--card);
+  }
+
+  /* BANNER */
+  .promo {
+    margin: 0 24px 22px;
+    background: linear-gradient(135deg, #1A1612 0%, #2A2018 50%, #3A2818 100%);
+    border-radius: 24px;
+    padding: 22px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 170px;
+  }
+
+  .promo::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 91, 46, 0.5) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+
+  .promo-content { position: relative; z-index: 2; flex: 1; }
+
+  .promo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 91, 46, 0.22);
+    color: #FFB39A;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 91, 46, 0.3);
+  }
+
+  .promo-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .promo-title em { font-style: italic; color: #FFB39A; }
+
+  .promo-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 14px;
+  }
+
+  .promo-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Geist', sans-serif;
+    box-shadow: 0 6px 18px rgba(255, 91, 46, 0.4);
+  }
+
+  .promo-visual {
+    position: relative;
+    z-index: 1;
+    width: 110px;
+    height: 140px;
+    border-radius: 18px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid rgba(255,255,255,0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    background: #2A2018;
+  }
+
+  .promo-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .promo-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 0 22px;
+  }
+
+  .promo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(26, 22, 18, 0.15);
+  }
+
+  .promo-dot.active {
+    background: var(--ink);
+    width: 20px;
+    border-radius: 100px;
+  }
+
+  /* SEARCH */
+  .search-wrap { padding: 0 24px 22px; }
+
+  .search {
+    background: var(--card);
+    border: 1.5px solid rgba(26, 22, 18, 0.08);
+    border-radius: 18px;
+    padding: 5px 5px 5px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .search-icon { color: var(--ink-muted); }
+
+  .search-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  .search-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: var(--ink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* CATEGORIES */
+  .quick-cats {
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .qcat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+
+  .qcat-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 18px;
+    overflow: hidden;
+    background-color: #E8E3DA;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(26, 22, 18, 0.04);
+    position: relative;
+  }
+
+  .qcat-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .qcat-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: var(--accent);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 100px;
+    z-index: 2;
+  }
+
+  .qcat-badge.new { background: var(--green); }
+
+  .qcat-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--ink-soft);
+    line-height: 1.2;
+  }
+
+  /* GROUPS */
+  .cat-group { margin-bottom: 28px; }
+
+  .group-head {
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .group-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .group-icon.health { background: var(--accent-soft); color: var(--accent); }
+  .group-icon.home { background: #DBF0E5; color: var(--green); }
+  .group-icon.education { background: #E8DEF8; color: #6B4FB0; }
+  .group-icon.beauty { background: #FCDDE8; color: #C73E7A; }
+
+  .group-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+
+  .group-link {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .group-scroll {
+    padding-left: 24px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-right: 24px;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .group-scroll::-webkit-scrollbar { display: none; }
+
+  .group-card {
+    flex-shrink: 0;
+    width: 140px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    height: 180px;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .group-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .group-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+  }
+
+  .group-card-name {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    color: white;
+    z-index: 2;
+  }
+
+  .group-card-name strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .group-card-name small {
+    font-size: 10px;
+    opacity: 0.8;
+    font-weight: 500;
+  }
+
+  .group-card-rating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.95);
+    padding: 3px 7px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--ink);
+    z-index: 2;
+  }
+
+  .group-card-rating .star { color: var(--gold); }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 12px 24px 28px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(26, 22, 18, 0.05);
+    z-index: 50;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--ink-muted);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 10px;
+  }
+
+  .nav-item.active { color: var(--accent); }
+
+  .nav-item.fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: var(--accent);
+    color: white;
+    margin-top: -22px;
+    box-shadow: 0 10px 24px rgba(255, 91, 46, 0.4);
+    justify-content: center;
+    transform: rotate(-3deg);
+  }
+
+  .nav-item.fab svg { width: 26px; height: 26px; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <div class="scroll-area">
+
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><path d="M1 8h2v3H1zM5 6h2v5H5zM9 4h2v7H9zM13 1h2v10h-2z"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 3c2.2 0 4.2.9 5.7 2.3l1.4-1.4C13.2 2 10.7 1 8 1S2.8 2 .9 3.9l1.4 1.4C3.8 3.9 5.8 3 8 3z"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="22" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2.5" y="2.5" width="19" height="7" rx="1.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="location-pill">
+        <div class="loc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="loc-text">
+          <small>Manzil</small>
+          <strong>
+            Toshkent, Yunusobod
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </strong>
+        </div>
+      </div>
+
+      <div class="icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge"></span>
+      </div>
+    </div>
+
+    <!-- BANNER -->
+    <div class="promo">
+      <div class="promo-content">
+        <span class="promo-badge">Maxsus taklif</span>
+        <h2 class="promo-title">Kir yuvish<br><em>30% chegirma</em></h2>
+        <p class="promo-sub">Keyingi 3 buyurtmada</p>
+        <button class="promo-btn">
+          USTA30 kodi
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="promo-visual">
+        <img src="https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=300&auto=format&fit=crop" alt="Kir yuvish">
+      </div>
+    </div>
+
+    <div class="promo-dots">
+      <span class="promo-dot active"></span>
+      <span class="promo-dot"></span>
+      <span class="promo-dot"></span>
+      <span class="promo-dot"></span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="search-text">Qanday yordam kerak?</span>
+        <div class="search-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="quick-cats">
+      <!-- Uy tozalash -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <span class="qcat-badge">-10%</span>
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&auto=format&fit=crop" alt="Uy tozalash">
+        </div>
+        <span class="qcat-label">Uy tozalash</span>
+      </div>
+      <!-- Go'zallik -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=200&auto=format&fit=crop" alt="Go'zallik">
+        </div>
+        <span class="qcat-label">Go'zallik</span>
+      </div>
+      <!-- Usta -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=200&auto=format&fit=crop" alt="Usta">
+        </div>
+        <span class="qcat-label">Usta</span>
+      </div>
+      <!-- Konditsioner -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1631545806609-a3c1bf41cb20?w=200&auto=format&fit=crop" alt="Konditsioner">
+        </div>
+        <span class="qcat-label">Konditsioner</span>
+      </div>
+      <!-- Kir yuvish -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <span class="qcat-badge new">Yangi</span>
+          <img src="https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=200&auto=format&fit=crop" alt="Kir yuvish">
+        </div>
+        <span class="qcat-label">Kir yuvish</span>
+      </div>
+      <!-- Hashorot -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1527515637462-cff94aca55f9?w=200&auto=format&fit=crop" alt="Hashorot">
+        </div>
+        <span class="qcat-label">Hashorot</span>
+      </div>
+      <!-- Avto xizmat -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=200&auto=format&fit=crop" alt="Avto xizmat">
+        </div>
+        <span class="qcat-label">Avto xizmat</span>
+      </div>
+      <!-- Enaga -->
+      <div class="qcat">
+        <div class="qcat-img">
+          <img src="https://images.unsplash.com/photo-1543342384-1f1350e27861?w=200&auto=format&fit=crop" alt="Enaga">
+        </div>
+        <span class="qcat-label">Enaga</span>
+      </div>
+    </div>
+
+    <!-- SOG'LIQ -->
+    <div class="cat-group">
+      <div class="group-head">
+        <div class="group-icon health">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <span class="group-title">Sog'liq</span>
+        <a class="group-link">Hammasi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="group-scroll">
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=300&auto=format&fit=crop" alt="Hamshira">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Hamshira</strong>
+            <small>Uyga uqol qilish</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop" alt="Shifokor">
+          <span class="group-card-rating"><span class="star">★</span>5.0</span>
+          <div class="group-card-name">
+            <strong>Shifokor</strong>
+            <small>Uyga chaqirish</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=300&auto=format&fit=crop" alt="Stomatolog">
+          <span class="group-card-rating"><span class="star">★</span>4.8</span>
+          <div class="group-card-name">
+            <strong>Stomatolog</strong>
+            <small>Tish davolash</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=300&auto=format&fit=crop" alt="Massajchi">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Massajchi</strong>
+            <small>Uyda massaj</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UY XIZMATLARI -->
+    <div class="cat-group">
+      <div class="group-head">
+        <div class="group-icon home">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <span class="group-title">Uy xizmatlari</span>
+        <a class="group-link">Hammasi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="group-scroll">
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=300&auto=format&fit=crop" alt="Santexnik">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Santexnik</strong>
+            <small>80 000 so'mdan</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=300&auto=format&fit=crop" alt="Elektrik">
+          <span class="group-card-rating"><span class="star">★</span>4.8</span>
+          <div class="group-card-name">
+            <strong>Elektrik</strong>
+            <small>100 000 so'mdan</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&auto=format&fit=crop" alt="Tozalovchi">
+          <span class="group-card-rating"><span class="star">★</span>5.0</span>
+          <div class="group-card-name">
+            <strong>Tozalovchi</strong>
+            <small>150 000 so'mdan</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1509817173358-17cbf5b0e5c4?w=300&auto=format&fit=crop" alt="Duradgor">
+          <span class="group-card-rating"><span class="star">★</span>4.7</span>
+          <div class="group-card-name">
+            <strong>Duradgor</strong>
+            <small>120 000 so'mdan</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TA'LIM -->
+    <div class="cat-group">
+      <div class="group-head">
+        <div class="group-icon education">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <span class="group-title">Ta'lim</span>
+        <a class="group-link">Hammasi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="group-scroll">
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=300&auto=format&fit=crop" alt="Matematika">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Matematika</strong>
+            <small>70 000 so'm/soat</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=300&auto=format&fit=crop" alt="Ingliz tili">
+          <span class="group-card-rating"><span class="star">★</span>5.0</span>
+          <div class="group-card-name">
+            <strong>Ingliz tili</strong>
+            <small>80 000 so'm/soat</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&auto=format&fit=crop" alt="Repetitor">
+          <span class="group-card-rating"><span class="star">★</span>4.8</span>
+          <div class="group-card-name">
+            <strong>Repetitor</strong>
+            <small>60 000 so'm/soat</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&auto=format&fit=crop" alt="Dasturlash">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Dasturlash</strong>
+            <small>120 000 so'm/soat</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GO'ZALLIK -->
+    <div class="cat-group">
+      <div class="group-head">
+        <div class="group-icon beauty">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C9 6 9 10 12 14c3-4 3-8 0-12zM5 22c0-3 3-6 7-6s7 3 7 6"/></svg>
+        </div>
+        <span class="group-title">Go'zallik</span>
+        <a class="group-link">Hammasi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="group-scroll">
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&auto=format&fit=crop" alt="Sartarosh">
+          <span class="group-card-rating"><span class="star">★</span>4.9</span>
+          <div class="group-card-name">
+            <strong>Sartarosh</strong>
+            <small>Uyga chaqirish</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=300&auto=format&fit=crop" alt="Vizajist">
+          <span class="group-card-rating"><span class="star">★</span>5.0</span>
+          <div class="group-card-name">
+            <strong>Vizajist</strong>
+            <small>Make-up</small>
+          </div>
+        </div>
+        <div class="group-card">
+          <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&auto=format&fit=crop" alt="Manikyur">
+          <span class="group-card-rating"><span class="star">★</span>4.8</span>
+          <div class="group-card-name">
+            <strong>Manikyur</strong>
+            <small>Tirnoq parvarishi</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3l9-8z"/></svg>
+      <span>Asosiy</span>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Buyurtmalar</span>
+    </div>
+    <div class="nav-item fab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Xabarlar</span>
+    </div>
+    <div class="nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profil</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
