@@ -21,7 +21,10 @@ export default function App() {
       <ToursByCountry />
       <PopularDestinations />
 
-      <BottomNav />
+      {/* Spacer so the fixed BottomNav (~94px) does not cover content */}
+      <div className="h-[94px] bg-white shrink-0" />
+
+      <BottomNav scrollY={scrollY} />
     </div>
   )
 }

@@ -22,8 +22,9 @@ export default function Hero({ scrollY }: HeroProps) {
   /* "Проведите вверх" disappears earliest */
   const swipeOpacity = useTransform(scrollY, [0, 80], [1, 0], { clamp: true })
 
-  /* Search bar: migrates upward toward Frame 2 position */
-  const searchY = useTransform(scrollY, [0, 300], [0, -380], { clamp: true })
+  /* Search bar: migrates upward from Frame 1 position (~430px from top)
+     to Frame 2 position (~180px from top of compressed 259px hero) */
+  const searchTop = useTransform(scrollY, [0, 300], [430, 180], { clamp: true })
 
   /* Overlay: darkens slightly so light text remains readable when shrunk */
   const overlayOpacity = useTransform(scrollY, [0, 300], [0.8, 0.95], { clamp: true })
@@ -38,7 +39,7 @@ export default function Hero({ scrollY }: HeroProps) {
   return (
     <motion.section
       style={{ height: heroHeight, ...bgStyle }}
-      className="relative w-full flex flex-col overflow-hidden flex-shrink-0"
+      className="relative w-full overflow-hidden flex-shrink-0"
     >
       {/* Animated dark overlay */}
       <motion.div
@@ -50,44 +51,40 @@ export default function Hero({ scrollY }: HeroProps) {
         }}
       />
 
-      {/* Logo (always visible) */}
-      <header className="relative z-10 pt-8 px-5 pb-2">
+      {/* Logo (top-left, always visible) */}
+      <header className="absolute top-8 left-5 z-10">
         <Logo />
       </header>
 
-      {/* Headline + subtitle (fade as user scrolls) */}
-      <motion.div
-        className="relative z-10 px-[22px] pt-11 flex flex-col gap-3.5"
-        style={{ opacity: 1 }}
+      {/* Headline (fades & lifts) */}
+      <motion.h1
+        className="absolute top-[156px] left-[22px] right-[22px] z-10 text-[42px] font-extrabold text-white leading-[1.04] tracking-[0.3px] pointer-events-none"
+        style={{ opacity: headlineOpacity, y: headlineY }}
       >
-        <motion.h1
-          className="text-[42px] font-extrabold text-white leading-[1.04] tracking-[0.3px]"
-          style={{ opacity: headlineOpacity, y: headlineY }}
-        >
-          Всё для<br />
-          <span className="text-accent italic">путешествия</span>
-        </motion.h1>
+        Всё для<br />
+        <span className="text-accent italic">путешествия</span>
+      </motion.h1>
 
-        <motion.p
-          className="text-[13px] font-semibold text-white/70 leading-[1.55] -tracking-[.1px] flex flex-wrap gap-x-1 gap-y-0.5"
-          style={{ opacity: subtitleOpacity, y: subtitleY }}
-        >
-          <span>Авиабилеты</span><span className="opacity-50"> · </span>
-          <span>Отели</span><span className="opacity-50"> · </span>
-          <span>Туры</span><span className="opacity-50"> · </span>
-          <span>eSIM</span><span className="opacity-50"> · </span>
-          <span>Экскурсии</span>
-          <span className="basis-full h-0" />
-          <span>Аэропорт-такси</span><span className="opacity-50"> · </span>
-          <span>Трансфер</span><span className="opacity-50"> · </span>
-          <span>Аренда авто</span>
-        </motion.p>
-      </motion.div>
+      {/* Services subtitle (fades & lifts) */}
+      <motion.p
+        className="absolute top-[300px] left-[22px] right-[22px] z-10 text-[13px] font-semibold text-white/70 leading-[1.55] -tracking-[.1px] flex flex-wrap gap-x-1 gap-y-0.5 pointer-events-none"
+        style={{ opacity: subtitleOpacity, y: subtitleY }}
+      >
+        <span>Авиабилеты</span><span className="opacity-50"> · </span>
+        <span>Отели</span><span className="opacity-50"> · </span>
+        <span>Туры</span><span className="opacity-50"> · </span>
+        <span>eSIM</span><span className="opacity-50"> · </span>
+        <span>Экскурсии</span>
+        <span className="basis-full h-0" />
+        <span>Аэропорт-такси</span><span className="opacity-50"> · </span>
+        <span>Трансфер</span><span className="opacity-50"> · </span>
+        <span>Аренда авто</span>
+      </motion.p>
 
       {/* Search bar (migrates up on scroll) */}
       <motion.div
-        className="relative z-10 px-5 py-2 mt-3.5"
-        style={{ y: searchY }}
+        className="absolute left-5 right-5 z-10"
+        style={{ top: searchTop }}
       >
         <div className="bg-white/95 backdrop-blur-xl rounded-[40px] flex items-center shadow-card">
           <div className="flex-1 flex items-center gap-3.5 px-5 py-[17px] pr-3">
@@ -99,7 +96,7 @@ export default function Hero({ scrollY }: HeroProps) {
               Куда отправимся
             </span>
           </div>
-          <div className="pl-0 p-2.5">
+          <div className="p-2.5 pl-0">
             <button
               type="button"
               className="w-[46px] h-[46px] rounded-full bg-brand border-[1.5px] border-brand-border flex items-center justify-center shadow-btn cursor-pointer transition-transform hover:scale-105 active:scale-95"
@@ -118,11 +115,9 @@ export default function Hero({ scrollY }: HeroProps) {
         </div>
       </motion.div>
 
-      <div className="flex-1" />
-
-      {/* Swipe up indicator (fades earliest) */}
+      {/* Swipe up indicator (bottom of hero, fades earliest) */}
       <motion.div
-        className="relative z-10 flex flex-col items-center gap-1.5 px-5 pt-6 pb-4 cursor-pointer"
+        className="absolute bottom-4 left-0 right-0 z-10 flex flex-col items-center gap-1.5 cursor-pointer pointer-events-none"
         style={{ opacity: swipeOpacity }}
       >
         <svg width="24" height="14" viewBox="0 0 24 14" fill="none">

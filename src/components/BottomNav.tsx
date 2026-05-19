@@ -1,3 +1,5 @@
+import { motion, useTransform, type MotionValue } from 'framer-motion'
+
 interface NavItem {
   label: string
   active: boolean
@@ -53,9 +55,21 @@ const items: NavItem[] = [
   { label: 'Профиль',   active: false, icon: <ProfileIcon /> },
 ]
 
-export default function BottomNav() {
+interface BottomNavProps {
+  scrollY: MotionValue<number>
+}
+
+export default function BottomNav({ scrollY }: BottomNavProps) {
+  /* Slide-up + fade-in once user has scrolled past hero (>100px) */
+  const navY = useTransform(scrollY, [100, 250], [120, 0], { clamp: true })
+  const navOpacity = useTransform(scrollY, [100, 250], [0, 1], { clamp: true })
+  const pointerEvents = useTransform(scrollY, (v) => (v > 100 ? 'auto' : 'none'))
+
   return (
-    <div className="sticky bottom-0 w-full bg-white z-30 border-t border-black/[.06]">
+    <motion.div
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[393px] max-w-full bg-white z-30 border-t border-black/[.06]"
+      style={{ y: navY, opacity: navOpacity, pointerEvents }}
+    >
       <div className="px-3 py-1 flex items-center w-full">
         {items.map((it) => (
           <button
@@ -77,10 +91,9 @@ export default function BottomNav() {
           </button>
         ))}
       </div>
-      {/* iPhone home indicator */}
       <div className="h-8 flex items-center justify-center">
         <div className="w-[134px] h-[5px] rounded-full bg-black" />
       </div>
-    </div>
+    </motion.div>
   )
 }
