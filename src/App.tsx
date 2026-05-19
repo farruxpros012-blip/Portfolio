@@ -10,18 +10,17 @@ export default function App() {
   const { scrollY } = useScroll()
   const reducedMotion = useReducedMotion()
 
-  /* Snap logic: only when motion is allowed */
   useScrollSnap(reducedMotion ? 0 : 300, 150)
 
   return (
-    <div className="w-[393px] max-w-full min-h-screen flex flex-col bg-white shadow-2xl mx-auto relative">
+    <div className="w-[440px] max-w-full min-h-screen flex flex-col bg-white mx-auto relative overflow-x-hidden">
       <Hero scrollY={scrollY} />
 
       <Services />
       <ToursByCountry />
       <PopularDestinations />
 
-      {/* Spacer so the fixed BottomNav (~94px) does not cover content */}
+      {/* Spacer so the fixed BottomNav (~94px) doesn't cover content */}
       <div className="h-[94px] bg-white shrink-0" />
 
       <BottomNav scrollY={scrollY} />

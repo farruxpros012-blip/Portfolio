@@ -67,7 +67,7 @@ export default function BottomNav({ scrollY }: BottomNavProps) {
 
   return (
     <motion.div
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[393px] max-w-full bg-white z-30 border-t border-black/[.06]"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[440px] max-w-full bg-white z-30 border-t border-black/[.06]"
       style={{ y: navY, opacity: navOpacity, pointerEvents }}
     >
       <div className="px-3 py-1 flex items-center w-full">

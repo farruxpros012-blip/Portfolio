@@ -7,105 +7,117 @@ interface HeroProps {
   scrollY: MotionValue<number>
 }
 
+/**
+ * Hero — morphs between Figma Frame 1 (956×440) and Frame 2 (259×440).
+ *
+ * Figma positions (px, with 59px iPhone status-bar area at top):
+ *   Logo:      y=67   (always visible, same in F1 & F2)
+ *   Headline:  y=217  (F1 only, fades)
+ *   Subtitle:  y=345  (F1 only, fades)
+ *   Search:    y=421 (F1) → y=163 (F2)
+ *   Swipe up:  y=838  (F1 only, fades)
+ *   Hero h:    956 (F1) → 259 (F2)
+ */
 export default function Hero({ scrollY }: HeroProps) {
-  /* Hero height: Figma Frame 1 (956px) → Frame 2 (259px) over 0→300px scroll */
   const heroHeight = useTransform(scrollY, [0, 300], [956, 259], { clamp: true })
 
-  /* Big headline: fades & lifts away first */
+  /* Frame 1 → Frame 2 element transitions */
   const headlineOpacity = useTransform(scrollY, [0, 100], [1, 0], { clamp: true })
-  const headlineY = useTransform(scrollY, [0, 100], [0, -30], { clamp: true })
-
-  /* Services subtitle: fades slightly later */
   const subtitleOpacity = useTransform(scrollY, [50, 150], [1, 0], { clamp: true })
-  const subtitleY = useTransform(scrollY, [50, 150], [0, -20], { clamp: true })
+  const swipeOpacity    = useTransform(scrollY, [0, 80],  [1, 0], { clamp: true })
+  const searchTop       = useTransform(scrollY, [0, 300], [421, 163], { clamp: true })
 
-  /* "Проведите вверх" disappears earliest */
-  const swipeOpacity = useTransform(scrollY, [0, 80], [1, 0], { clamp: true })
-
-  /* Search bar: migrates upward from Frame 1 position (~430px from top)
-     to Frame 2 position (~180px from top of compressed 259px hero) */
-  const searchTop = useTransform(scrollY, [0, 300], [430, 180], { clamp: true })
-
-  /* Overlay: darkens slightly so light text remains readable when shrunk */
-  const overlayOpacity = useTransform(scrollY, [0, 300], [0.8, 0.95], { clamp: true })
-
-  const bgStyle = {
-    backgroundImage: `url(${HERO_BG})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat' as const,
-  }
+  /* Frame 1 (light bottom gradient) fades out; Frame 2 (dark top gradient) fades in */
+  const f1OverlayOpacity = useTransform(scrollY, [0, 300], [1, 0], { clamp: true })
+  const f2OverlayOpacity = useTransform(scrollY, [0, 300], [0, 1], { clamp: true })
 
   return (
     <motion.section
-      style={{ height: heroHeight, ...bgStyle }}
-      className="relative w-full overflow-hidden flex-shrink-0"
+      style={{ height: heroHeight }}
+      className="relative w-full overflow-hidden flex-shrink-0 bg-[#0a1426]"
     >
-      {/* Animated dark overlay */}
+      {/* Background image (positioned to show sky/horizon when compressed) */}
+      <img
+        src={HERO_BG}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: 'center 35%' }}
+      />
+
+      {/* Frame 1 overlay (warm dark, full hero) */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: overlayOpacity,
+          opacity: f1OverlayOpacity,
           backgroundImage:
-            'linear-gradient(180deg, rgba(6,18,42,.84) 0%, rgba(6,18,42,.62) 30%, rgba(6,18,42,.10) 55%, transparent 68%, rgba(3,10,24,.50) 100%)',
+            'linear-gradient(180deg, rgba(6,18,42,.78) 0%, rgba(6,18,42,.55) 30%, rgba(6,18,42,.08) 55%, transparent 70%, rgba(3,10,24,.40) 100%)',
         }}
       />
 
-      {/* Logo (top-left, always visible) */}
-      <header className="absolute top-8 left-5 z-10">
-        <Logo />
-      </header>
+      {/* Frame 2 overlay (Figma: rgba(0,0,0,.64) → transparent at 63%) */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: f2OverlayOpacity,
+          backgroundImage:
+            'linear-gradient(180deg, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0) 63%)',
+        }}
+      />
 
-      {/* Headline (fades & lifts) */}
+      {/* Logo — Figma: y=67, x=20 (after 59px status bar + 8px py) */}
+      <div className="absolute top-[67px] left-5 z-10">
+        <Logo />
+      </div>
+
+      {/* Headline — Figma: y=217 (F1 only) */}
       <motion.h1
-        className="absolute top-[156px] left-[22px] right-[22px] z-10 text-[42px] font-extrabold text-white leading-[1.04] tracking-[0.3px] pointer-events-none"
-        style={{ opacity: headlineOpacity, y: headlineY }}
+        className="absolute top-[217px] left-5 right-5 z-10 text-[56px] font-extrabold text-white leading-[56px] tracking-[0.4px] pointer-events-none"
+        style={{ opacity: headlineOpacity }}
       >
         Всё для<br />
         <span className="text-accent italic">путешествия</span>
       </motion.h1>
 
-      {/* Services subtitle (fades & lifts) */}
+      {/* Subtitle — Figma: y=345 (F1 only) */}
       <motion.p
-        className="absolute top-[300px] left-[22px] right-[22px] z-10 text-[13px] font-semibold text-white/70 leading-[1.55] -tracking-[.1px] flex flex-wrap gap-x-1 gap-y-0.5 pointer-events-none"
-        style={{ opacity: subtitleOpacity, y: subtitleY }}
+        className="absolute top-[355px] left-5 right-5 z-10 text-[17px] font-semibold text-white/70 leading-[22px] -tracking-[.43px] flex flex-wrap items-center gap-x-1 gap-y-1.5 pointer-events-none"
+        style={{ opacity: subtitleOpacity }}
       >
-        <span>Авиабилеты</span><span className="opacity-50"> · </span>
-        <span>Отели</span><span className="opacity-50"> · </span>
-        <span>Туры</span><span className="opacity-50"> · </span>
-        <span>eSIM</span><span className="opacity-50"> · </span>
+        <span>Авиабилеты</span><span className="opacity-50">·</span>
+        <span>Отели</span><span className="opacity-50">·</span>
+        <span>Туры</span><span className="opacity-50">·</span>
+        <span>eSIM</span><span className="opacity-50">·</span>
         <span>Экскурсии</span>
-        <span className="basis-full h-0" />
-        <span>Аэропорт-такси</span><span className="opacity-50"> · </span>
-        <span>Трансфер</span><span className="opacity-50"> · </span>
+        <span>Аэропорт-такси</span><span className="opacity-50">·</span>
+        <span>Трансфер</span><span className="opacity-50">·</span>
         <span>Аренда авто</span>
       </motion.p>
 
-      {/* Search bar (migrates up on scroll) */}
+      {/* Search bar — Figma: F1 y=421 → F2 y=163 */}
       <motion.div
         className="absolute left-5 right-5 z-10"
         style={{ top: searchTop }}
       >
-        <div className="bg-white/95 backdrop-blur-xl rounded-[40px] flex items-center shadow-card">
-          <div className="flex-1 flex items-center gap-3.5 px-5 py-[17px] pr-3">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <circle cx="10" cy="10" r="7.2" stroke="#111" strokeWidth="1.8" />
-              <path d="M15.7 15.7L20 20" stroke="#111" strokeWidth="1.9" strokeLinecap="round" />
+        <div className="bg-white/95 backdrop-blur-xl rounded-[32px] flex items-center shadow-[0px_4px_8px_rgba(0,0,0,0.2)]">
+          <div className="flex-1 flex items-center gap-4 pl-5 py-5">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="8" stroke="#111" strokeWidth="1.8" />
+              <path d="M17 17L21 21" stroke="#111" strokeWidth="1.9" strokeLinecap="round" />
             </svg>
-            <span className="flex-1 text-center text-[16px] font-semibold text-[#111] -tracking-[.3px]">
+            <span className="flex-1 text-center text-[16px] font-semibold text-black -tracking-[.31px] leading-[21px]">
               Куда отправимся
             </span>
           </div>
-          <div className="p-2.5 pl-0">
+          <div className="p-3">
             <button
               type="button"
-              className="w-[46px] h-[46px] rounded-full bg-brand border-[1.5px] border-brand-border flex items-center justify-center shadow-btn cursor-pointer transition-transform hover:scale-105 active:scale-95"
+              className="w-10 h-10 rounded-full bg-brand border-[1.5px] border-brand-border flex items-center justify-center shadow-[0px_4px_8px_rgba(0,0,0,0.24)] cursor-pointer transition-transform hover:scale-105 active:scale-95"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
-                  d="M4 10H16M16 10L11 5M16 10L11 15"
+                  d="M5 12H19M19 12L13 6M19 12L13 18"
                   stroke="white"
-                  strokeWidth="2.1"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -115,9 +127,9 @@ export default function Hero({ scrollY }: HeroProps) {
         </div>
       </motion.div>
 
-      {/* Swipe up indicator (bottom of hero, fades earliest) */}
+      {/* Swipe up — Figma: y=838 (F1 only) */}
       <motion.div
-        className="absolute bottom-4 left-0 right-0 z-10 flex flex-col items-center gap-1.5 cursor-pointer pointer-events-none"
+        className="absolute top-[838px] left-0 right-0 z-10 flex flex-col items-center gap-1 pointer-events-none"
         style={{ opacity: swipeOpacity }}
       >
         <svg width="24" height="14" viewBox="0 0 24 14" fill="none">
@@ -129,7 +141,7 @@ export default function Hero({ scrollY }: HeroProps) {
             strokeLinejoin="round"
           />
         </svg>
-        <span className="text-[16px] font-semibold text-white/90 -tracking-[.3px]">
+        <span className="text-[17px] font-semibold text-white/90 -tracking-[.43px] leading-[22px]">
           Проведите вверх
         </span>
       </motion.div>
